@@ -8,9 +8,9 @@ app = Flask(__name__)
 def open_connection():
     connection = getattr(g, '_connection', None)
     if connection == None:
-        connection = g._connection = sqlite.connect(PATH)
-    connection.row_factory = sqlite.row_factor
-    return _connection
+        connection = g._connection = sqlite3.connect(PATH)
+    connection.row_factory = sqlite3.row_factor
+    return connection
 
 def execute_sql(sql, values=(), commit=False, single=False):
     connection = open_connection()
@@ -21,7 +21,7 @@ def execute_sql(sql, values=(), commit=False, single=False):
         results = cursor.fetchone() if single else cursor.fetchall()
 
     cursor.close()
-    return results()
+    return results
 
 def close_connection(exception):
     connection = getattr(g, '_connection', None)
